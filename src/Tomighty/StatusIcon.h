@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Célio Cidral Jr. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 @interface StatusIcon : NSObject
 
