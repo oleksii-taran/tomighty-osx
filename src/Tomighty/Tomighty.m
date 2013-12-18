@@ -10,10 +10,10 @@
 
 @implementation Tomighty
 {
-    int pomodoroCount;
+    NSInteger pomodoroCount;
 }
 
-- (int)pomodoroCount {
+- (NSInteger)pomodoroCount {
     return pomodoroCount;
 }
 
