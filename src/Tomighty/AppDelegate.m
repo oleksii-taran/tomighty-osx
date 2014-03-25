@@ -57,21 +57,21 @@
 }
 
 - (IBAction)startPomodoro:(id)sender {
-    NSInteger minutes = [Preferences integerForKey:PREF_TIME_POMODORO];
+    int minutes = [Preferences intValue:PREF_TIME_POMODORO];
     [self activateTimerMenuItem:self.startPomodoroMenuItem];
     [statusIcon pomodoro];
     [timer start:minutes context:pomodoroContext];
 }
 
 - (IBAction)startShortBreak:(id)sender {
-    NSInteger minutes = [Preferences integerForKey:PREF_TIME_SHORT_BREAK];
+    int minutes = [Preferences intValue:PREF_TIME_SHORT_BREAK];
     [self activateTimerMenuItem:self.startShortBreakMenuItem];
     [statusIcon shortBreak];
     [timer start:minutes context:shortBreakContext];
 }
 
 - (IBAction)startLongBreak:(id)sender {
-    NSInteger minutes = [Preferences integerForKey:PREF_TIME_LONG_BREAK];
+    int minutes = [Preferences intValue:PREF_TIME_LONG_BREAK];
     [self activateTimerMenuItem:self.startLongBreakMenuItem];
     [statusIcon longBreak];
     [timer start:minutes context:longBreakContext];
@@ -87,15 +87,15 @@
     [timer stop];
 }
 
-- (void)timerTick:(NSInteger)secondsRemaining {
+- (void)timerTick:(int)secondsRemaining {
     [self updateRemainingTime:secondsRemaining];
 }
 
-- (void)timerStarted:(NSInteger)secondsRemaining context:(TimerContext *)context {
+- (void)timerStarted:(int)secondsRemaining context:(TimerContext *)context {
     [self updateRemainingTime:secondsRemaining];
     [self.stopTimerMenuItem setEnabled:YES];
     
-    if([Preferences boolForKey:PREF_SOUND_TIMER_START]) {
+    if([Preferences intValue:PREF_SOUND_TIMER_START]) {
         [sounds crank];
     }
     
@@ -113,7 +113,7 @@
 }
 
 - (void)timerFinished:(TimerContext *)context {
-    if([Preferences boolForKey:PREF_SOUND_TIMER_FINISH]) {
+    if([Preferences intValue:PREF_SOUND_TIMER_FINISH]) {
         [sounds bell];
     }
     
@@ -141,20 +141,20 @@
     [self activateTimerMenuItem:NSOffState menuItem:self.startLongBreakMenuItem];
 }
 
-- (void)updateRemainingTime:(NSInteger)secondsRemaining {
-    NSInteger minutes = secondsRemaining / 60;
-    NSInteger seconds = secondsRemaining % 60;
+- (void)updateRemainingTime:(int)secondsRemaining {
+    int minutes = secondsRemaining / 60;
+    int seconds = secondsRemaining % 60;
     
-    NSString *text = [NSString stringWithFormat:@"%02d:%02d", (int)minutes, (int)seconds];
+    NSString *text = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
     [self.remainingTimeMenuItem setTitle:text];
 }
 
 - (void)updatePomodoroCountText {
-    NSInteger pomodoroCount = [tomighty pomodoroCount];
+    int pomodoroCount = [tomighty pomodoroCount];
     BOOL isPlural = pomodoroCount > 1;
     NSString *text =
         pomodoroCount > 0 ?
-            [NSString stringWithFormat:@"%d full pomodoro%@", (int)pomodoroCount, isPlural ? @"s" : @""]
+            [NSString stringWithFormat:@"%d full pomodoro%@", pomodoroCount, isPlural ? @"s" : @""]
             : @"No full pomodoro yet";
     [self.pomodoroCountMenuItem setTitle:text];
 }
@@ -167,9 +167,9 @@
 
 - (BOOL)shouldPlayTicTacSound:(TimerContext *)context {
     if(context == pomodoroContext)
-        return [Preferences boolForKey:PREF_SOUND_TICTAC_POMODORO];
+        return [Preferences intValue:PREF_SOUND_TICTAC_POMODORO];
     else
-        return [Preferences boolForKey:PREF_SOUND_TICTAC_BREAK];
+        return [Preferences intValue:PREF_SOUND_TICTAC_BREAK];
 }
 
 - (void)showFinishNotification:(TimerContext *)context {

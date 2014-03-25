@@ -11,9 +11,9 @@
 
 @protocol TimerListener <NSObject>
 
-- (void)timerStarted:(NSInteger)secondsRemaining context:(TimerContext *)context;
+- (void)timerStarted:(int)secondsRemaining context:(TimerContext *)context;
 - (void)timerStopped;
 - (void)timerFinished:(TimerContext *)context;
-- (void)timerTick:(NSInteger)secondsRemaining;
+- (void)timerTick:(int)secondsRemaining;
 
 @end

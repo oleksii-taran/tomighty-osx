@@ -14,7 +14,7 @@
 
 @implementation Timer
 {
-    NSInteger secondsRemaining;
+    int secondsRemaining;
     __strong NSTimer *timer;
     __strong TimerContext *context;
     __weak id <TimerListener> listener;
@@ -28,7 +28,7 @@
     return self;
 }
 
-- (void)start:(NSInteger)minutes context:(TimerContext *)aContext {
+- (void)start:(int)minutes context:(TimerContext *)aContext {
     secondsRemaining = minutes * SIXTY_SECONDS;
     context = aContext;
     [self startTimer];

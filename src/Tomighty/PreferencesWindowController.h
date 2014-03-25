@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Célio Cidral Jr. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 
 @interface PreferencesWindowController : NSWindowController
 

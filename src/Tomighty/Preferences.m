@@ -38,20 +38,12 @@ NSString * const PREF_SOUND_TICTAC_BREAK = @"sound_tictac_break";
     }
 }
 
-+ (NSInteger)integerForKey:(NSString *)key {
-	return [[NSUserDefaults standardUserDefaults] integerForKey:key];
++ (int)intValue:(NSString *)key {
+    return (int)[[NSUserDefaults standardUserDefaults] integerForKey:key];
 }
 
-+ (BOOL)boolForKey:(NSString *)key {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:key];
-}
-
-+ (void)setInteger:(NSInteger)value forKey:(NSString *)key {
-	[[NSUserDefaults standardUserDefaults] setInteger:value forKey:key];
-}
-
-+ (void)setBool:(BOOL)value forKey:(NSString *)key {
-	[[NSUserDefaults standardUserDefaults] setBool:value forKey:key];
++ (void)setIntValue:(NSString *)key value:(int)value {
+    [[NSUserDefaults standardUserDefaults] setInteger:value forKey:key];
 }
 
 @end

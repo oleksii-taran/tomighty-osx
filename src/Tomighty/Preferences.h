@@ -18,10 +18,7 @@ extern NSString * const PREF_SOUND_TICTAC_BREAK;
 
 @interface Preferences : NSObject
 
-+ (NSInteger)integerForKey:(NSString *)key;
-+ (BOOL)boolForKey:(NSString *)key;
-
-+ (void)setInteger:(NSInteger)value forKey:(NSString *)key;
-+ (void)setBool:(BOOL)value forKey:(NSString *)key;
++ (int)intValue:(NSString *)key;
++ (void)setIntValue:(NSString *)key value:(int)value;
 
 @end

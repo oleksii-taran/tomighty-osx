@@ -14,7 +14,7 @@
 @interface Timer : NSObject
 
 - (id)initWithListener:(id <TimerListener>)listener;
-- (void)start:(NSInteger)minutes context:(TimerContext *)context;
+- (void)start:(int)minutes context:(TimerContext *)context;
 - (void)stop;
 
 @end

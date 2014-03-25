@@ -10,7 +10,7 @@
 
 @interface Tomighty : NSObject
 
-- (NSInteger)pomodoroCount;
+- (int)pomodoroCount;
 - (void)incrementPomodoroCount;
 - (void)resetPomodoroCount;
 
