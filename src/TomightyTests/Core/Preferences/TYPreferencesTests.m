@@ -9,7 +9,7 @@
 
 #import "TYPreferences.h"
 #import "TYUserDefaultsPreferences.h"
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 #import "TYMockEventBus.h"
 
 @interface TYPreferencesTests : XCTestCase
@@ -29,7 +29,7 @@
     [self removeUserDefaults];
 
     eventBus = [[TYMockEventBus alloc] init];
-    preferences = [[TYUserDefaultsPreferences alloc] initWith:eventBus];
+    preferences = [[TYUserDefaultsPreferences alloc] initWithEventBus:eventBus];
 }
 
 - (void)tearDown
@@ -62,26 +62,26 @@
 
 - (void)test_get_any_default_value
 {
-    XCTAssertEqual([preferences getInt:PREF_TIME_POMODORO], 25);
+    XCTAssertEqual([preferences intForKey:PREF_TIME_POMODORO], 25);
 }
 
 - (void)test_set_and_get_integer_value
 {
-    [preferences setInt:PREF_TIME_POMODORO value:123];
-    XCTAssertEqual([preferences getInt:PREF_TIME_POMODORO], 123);
+    [preferences setInt:123 forKey:PREF_TIME_POMODORO];
+    XCTAssertEqual([preferences intForKey:PREF_TIME_POMODORO], 123);
 }
 
 - (void)test_fire_event_when_integer_value_changes_on_set
 {
-    [preferences setInt:PREF_TIME_POMODORO value:987];
+    [preferences setInt:987 forKey:PREF_TIME_POMODORO];
     
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)1);
-    XCTAssertTrue([eventBus hasPublishedEvent:PREFERENCE_CHANGE withData:PREF_TIME_POMODORO atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePreferencesDidChange withData:PREF_TIME_POMODORO atPosition:1]);
 }
 
 - (void)test_do_not_fire_any_event_when_integer_value_does_not_change_on_set
 {
-    [preferences setInt:PREF_TIME_POMODORO value:25];
+    [preferences setInt:25 forKey:PREF_TIME_POMODORO];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)0);
 }
 
@@ -89,12 +89,12 @@
 {
     __block int valueWhenEventIsFired;
     
-    [eventBus subscribeTo:PREFERENCE_CHANGE subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypePreferencesDidChange usingBlock:^(id eventData)
     {
-        valueWhenEventIsFired = [preferences getInt:PREF_TIME_POMODORO];
+        valueWhenEventIsFired = [preferences intForKey:PREF_TIME_POMODORO];
     }];
     
-    [preferences setInt:PREF_TIME_POMODORO value:999];
+    [preferences setInt:999 forKey:PREF_TIME_POMODORO];
     
     XCTAssertEqual(valueWhenEventIsFired, 999);
 }

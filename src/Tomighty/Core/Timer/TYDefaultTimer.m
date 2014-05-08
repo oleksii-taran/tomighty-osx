@@ -5,9 +5,9 @@
 //  http://www.apache.org/licenses/LICENSE-2.0.txt
 //
 
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 #import "TYDefaultTimer.h"
-#import "TYTimerContext.h"
+#import "TYTimerContextProtocol.h"
 
 @implementation TYDefaultTimer
 {
@@ -16,15 +16,15 @@
     id<TYTimerContext> currentTimerContext;
 }
 
-+ (id)createWith:(id<TYEventBus>)anEventBus systemTimer:(id<TYSystemTimer>)aSystemTimer
++ (instancetype)timerWithEventBus:(id<TYEventBus>)anEventBus systemTimer:(id<TYSystemTimer>)aSystemTimer
 {
-    return [[TYDefaultTimer alloc] initWith:anEventBus systemTimer:aSystemTimer];
+    return [[TYDefaultTimer alloc] initWithEventBus:anEventBus systemTimer:aSystemTimer];
 }
 
-- (id)initWith:(id<TYEventBus>)anEventBus systemTimer:(id<TYSystemTimer>)aSystemTimer
+- (id)initWithEventBus:(id<TYEventBus>)anEventBus systemTimer:(id<TYSystemTimer>)aSystemTimer
 {
     self = [super init];
-    if(self)
+    if (self)
     {
         eventBus = anEventBus;
         systemTimer = aSystemTimer;
@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)start:(id<TYTimerContext>)context
+- (void)startWithContext:(id<TYTimerContext>)context
 {
     currentTimerContext = context;
     
@@ -40,9 +40,9 @@
     {
         [context addSeconds:-1];
         
-        if([context getRemainingSeconds] > 0)
+        if (context.remainingSeconds > 0)
         {
-            [eventBus publish:TIMER_TICK data:context];
+            [eventBus publishEventWithType:TYEventTypeTimerTick data:context];
         }
         else
         {
@@ -50,13 +50,13 @@
         }
     };
     [systemTimer triggerRepeatedly:trigger intervalInSeconds:1];
-    [eventBus publish:TIMER_START data:context];
+    [eventBus publishEventWithType:TYEventTypeTimerStart data:context];
 }
 
 - (void)stop
 {
     [systemTimer interrupt];
-    [eventBus publish:TIMER_STOP data:currentTimerContext];
+    [eventBus publishEventWithType:TYEventTypeTimerStop data:currentTimerContext];
 }
 
 @end

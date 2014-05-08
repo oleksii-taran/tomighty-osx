@@ -7,12 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TYAppUI.h"
-#import "TYEventBus.h"
+#import "TYAppUIProtocol.h"
+#import "TYEventBusProtocol.h"
 
 @interface TYUserInterfaceAgent : NSObject
 
-- (id)initWith:(id <TYAppUI>)ui;
-- (void)updateAppUiInResponseToEventsFrom:(id <TYEventBus>)eventBus;
+- (instancetype)initWithApplicationUI:(id <TYAppUI>)ui;
+- (void)updateAppUiInResponseToEventsFromEventBus:(id <TYEventBus>)eventBus;
 
 @end

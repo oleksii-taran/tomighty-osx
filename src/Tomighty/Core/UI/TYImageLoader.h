@@ -9,6 +9,6 @@
 
 @interface TYImageLoader : NSObject
 
-- (NSImage*)loadIcon:(NSString*)name;
+- (NSImage *)iconNamed:(NSString *)name;
 
 @end

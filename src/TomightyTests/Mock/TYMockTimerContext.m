@@ -22,12 +22,12 @@
     return self;
 }
 
-- (NSString *)getName
+- (NSString *)name
 {
     return nil;
 }
 
-- (int)getRemainingSeconds
+- (int)remainingSeconds
 {
     return remainingSeconds;
 }
@@ -37,7 +37,7 @@
     remainingSeconds += seconds;
 }
 
-- (TYTimerContextType)getContextType
+- (TYTimerContextType)type
 {
     return -1;
 }

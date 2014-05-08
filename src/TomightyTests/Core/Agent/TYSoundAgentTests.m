@@ -16,8 +16,8 @@
 #import "TYMockEventBus.h"
 #import "TYPreferences.h"
 #import "TYSoundAgent.h"
-#import "TYSoundPlayer.h"
-#import "TYTimerContext.h"
+#import "TYSoundPlayerProtocol.h"
+#import "TYTimerContextProtocol.h"
 
 @interface TYSoundAgentTests : XCTestCase
 
@@ -40,7 +40,7 @@
     preferences = mockProtocol(@protocol(TYPreferences));
     soundPlayer = mockProtocol(@protocol(TYSoundPlayer));
     timerContext = mockProtocol(@protocol(TYTimerContext));
-    soundAgent = [[TYSoundAgent alloc] initWith:soundPlayer preferences:preferences];
+    soundAgent = [[TYSoundAgent alloc] initWithSoundPlayer:soundPlayer preferences:preferences];
 
     [soundAgent playSoundsInResponseToEventsFrom:eventBus];
 }
@@ -52,67 +52,67 @@
 
 - (void)test_play_sound_when_timer_starts_if_enabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_SOUND_WHEN_TIMER_STARTS]) willReturnInteger:true];
-    [eventBus publish:TIMER_START data:timerContext];
-    [verify(soundPlayer) play:SOUND_TIMER_START];
+    [given([preferences intForKey:PREF_PLAY_SOUND_WHEN_TIMER_STARTS]) willReturnInteger:true];
+    [eventBus publishEventWithType:TYEventTypeTimerStart data:timerContext];
+    [verify(soundPlayer) playSoundWithName:SOUND_TIMER_START];
 }
 
 - (void)test_do_not_play_sound_when_timer_starts_if_disabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_SOUND_WHEN_TIMER_STARTS]) willReturnInteger:false];
-    [eventBus publish:TIMER_START data:timerContext];
-    [verifyCount(soundPlayer, never()) play:anything()];
+    [given([preferences intForKey:PREF_PLAY_SOUND_WHEN_TIMER_STARTS]) willReturnInteger:false];
+    [eventBus publishEventWithType:TYEventTypeTimerStart data:timerContext];
+    [verifyCount(soundPlayer, never()) playSoundWithName:anything()];
 }
 
 - (void)test_play_sound_when_timer_goes_off_if_enabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_SOUND_WHEN_TIMER_GOES_OFF]) willReturnInteger:true];
-    [eventBus publish:TIMER_GOES_OFF data:timerContext];
-    [verify(soundPlayer) play:SOUND_TIMER_GOES_OFF];
+    [given([preferences intForKey:PREF_PLAY_SOUND_WHEN_TIMER_GOES_OFF]) willReturnInteger:true];
+    [eventBus publishEventWithType:TYEventTypeTimerGoesOff data:timerContext];
+    [verify(soundPlayer) playSoundWithName:SOUND_TIMER_GOES_OFF];
 }
 
 - (void)test_do_not_play_sound_when_timer_goes_off_if_disabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_SOUND_WHEN_TIMER_GOES_OFF]) willReturnInteger:false];
-    [eventBus publish:TIMER_GOES_OFF data:timerContext];
-    [verifyCount(soundPlayer, never()) play:anything()];
+    [given([preferences intForKey:PREF_PLAY_SOUND_WHEN_TIMER_GOES_OFF]) willReturnInteger:false];
+    [eventBus publishEventWithType:TYEventTypeTimerGoesOff data:timerContext];
+    [verifyCount(soundPlayer, never()) playSoundWithName:anything()];
 }
 
 - (void)test_play_ticking_sound_when_pomodoro_starts_if_enabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:true];
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:false];
-    [eventBus publish:POMODORO_START data:timerContext];
-    [verify(soundPlayer) loop:SOUND_TIMER_TICK];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:true];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:false];
+    [eventBus publishEventWithType:TYEventTypePomodoroStart data:timerContext];
+    [verify(soundPlayer) loopSoundWithName:SOUND_TIMER_TICK];
 }
 
 - (void)test_do_not_play_ticking_sound_when_pomodoro_starts_if_disabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:false];
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:true];
-    [eventBus publish:POMODORO_START data:timerContext];
-    [verifyCount(soundPlayer, never()) loop:anything()];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:false];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:true];
+    [eventBus publishEventWithType:TYEventTypePomodoroStart data:timerContext];
+    [verifyCount(soundPlayer, never()) loopSoundWithName:anything()];
 }
 
 - (void)test_play_ticking_sound_when_break_starts_if_enabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:false];
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:true];
-    [eventBus publish:BREAK_START data:timerContext];
-    [verify(soundPlayer) loop:SOUND_TIMER_TICK];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:false];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:true];
+    [eventBus publishEventWithType:TYEventTypeBreakStart data:timerContext];
+    [verify(soundPlayer) loopSoundWithName:SOUND_TIMER_TICK];
 }
 
 - (void)test_do_not_play_ticking_sound_when_break_starts_if_disabled_by_preference
 {
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:true];
-    [given([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:false];
-    [eventBus publish:BREAK_START data:timerContext];
-    [verifyCount(soundPlayer, never()) loop:anything()];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO]) willReturnInteger:true];
+    [given([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK]) willReturnInteger:false];
+    [eventBus publishEventWithType:TYEventTypeBreakStart data:timerContext];
+    [verifyCount(soundPlayer, never()) loopSoundWithName:anything()];
 }
 
 - (void)test_stop_any_looping_sound_when_timer_stops
 {
-    [eventBus publish:TIMER_STOP data:timerContext];
+    [eventBus publishEventWithType:TYEventTypeTimerStop data:timerContext];
     [verify(soundPlayer) stopCurrentLoop];
 }
 

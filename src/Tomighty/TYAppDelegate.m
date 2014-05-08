@@ -7,20 +7,20 @@
 
 #import "TYAppDelegate.h"
 
-#import "TYTomighty.h"
+#import "TYTomightyProtocol.h"
 #import "TYSoundAgent.h"
 #import "TYSyntheticEventPublisher.h"
 #import "TYUserInterfaceAgent.h"
 
-#import "TYAppUI.h"
-#import "TYEventBus.h"
+#import "TYAppUIProtocol.h"
+#import "TYEventBusProtocol.h"
 #import "TYImageLoader.h"
 #import "TYPreferences.h"
-#import "TYSoundPlayer.h"
-#import "TYStatusIcon.h"
-#import "TYStatusMenu.h"
-#import "TYSystemTimer.h"
-#import "TYTimer.h"
+#import "TYSoundPlayerProtocol.h"
+#import "TYStatusIconProtocol.h"
+#import "TYStatusMenuProtocol.h"
+#import "TYSystemTimerProtocol.h"
+#import "TYTimerProtocol.h"
 
 #import "TYDefaultAppUI.h"
 #import "TYDefaultEventBus.h"
@@ -49,33 +49,34 @@
     
     id <TYEventBus> eventBus = [[TYDefaultEventBus alloc] init];
     id <TYSystemTimer> systemTimer = [[TYDefaultSystemTimer alloc] init];
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
     id <TYSoundPlayer> soundPlayer = [[TYDefaultSoundPlayer alloc] init];
-    id <TYStatusIcon> statusIcon = [[TYDefaultStatusIcon alloc] initWith:self.statusMenu imageLoader:imageLoader];
+    id <TYStatusIcon> statusIcon = [[TYDefaultStatusIcon alloc] initWithMenu:self.statusMenu imageLoader:imageLoader];
     id <TYStatusMenu> statusMenu = self;
-    id <TYAppUI> appUi = [[TYDefaultAppUI alloc] initWith:statusMenu statusIcon:statusIcon];
+    id <TYAppUI> appUi = [[TYDefaultAppUI alloc] initWithStatusMenu:statusMenu statusIcon:statusIcon];
     
-    preferences = [[TYUserDefaultsPreferences alloc] initWith:eventBus];
-    soundAgent = [[TYSoundAgent alloc] initWith:soundPlayer preferences:preferences];
+    preferences = [[TYUserDefaultsPreferences alloc] initWithEventBus:eventBus];
+    soundAgent = [[TYSoundAgent alloc] initWithSoundPlayer:soundPlayer preferences:preferences];
     syntheticEventPublisher = [[TYSyntheticEventPublisher alloc] init];
-    userInterfaceAgent = [[TYUserInterfaceAgent alloc] initWith:appUi];
-    tomighty = [[TYDefaultTomighty alloc] initWith:timer preferences:preferences eventBus:eventBus];
+    userInterfaceAgent = [[TYUserInterfaceAgent alloc] initWithApplicationUI:appUi];
+    tomighty = [[TYDefaultTomighty alloc] initWithTimer:timer preferences:preferences eventBus:eventBus];
     
     [syntheticEventPublisher publishSyntheticEventsInResponseToOtherEventsFrom:eventBus];
     [soundAgent playSoundsInResponseToEventsFrom:eventBus];
-    [userInterfaceAgent updateAppUiInResponseToEventsFrom:eventBus];
+    [userInterfaceAgent updateAppUiInResponseToEventsFromEventBus:eventBus];
     
-    [self initMenuItemsIcons:imageLoader];
+    [self prepareMenuItemsUsingImageLoader:imageLoader];
     
-    [eventBus publish:APP_INIT data:nil];
+    [eventBus publishEventWithType:TYEventTypeApplicationInit data:nil];
 }
 
-- (void)initMenuItemsIcons:(TYImageLoader *)imageLoader {
-    [self.remainingTimeMenuItem setImage:[imageLoader loadIcon:@"icon-clock"]];
-    [self.stopTimerMenuItem setImage:[imageLoader loadIcon:@"icon-stop-timer"]];
-    [self.startPomodoroMenuItem setImage:[imageLoader loadIcon:@"icon-start-pomodoro"]];
-    [self.startShortBreakMenuItem setImage:[imageLoader loadIcon:@"icon-start-short-break"]];
-    [self.startLongBreakMenuItem setImage:[imageLoader loadIcon:@"icon-start-long-break"]];
+- (void)prepareMenuItemsUsingImageLoader:(TYImageLoader *)imageLoader
+{
+    [self.remainingTimeMenuItem setImage:[imageLoader iconNamed:@"icon-clock"]];
+    [self.stopTimerMenuItem setImage:[imageLoader iconNamed:@"icon-stop-timer"]];
+    [self.startPomodoroMenuItem setImage:[imageLoader iconNamed:@"icon-start-pomodoro"]];
+    [self.startShortBreakMenuItem setImage:[imageLoader iconNamed:@"icon-start-short-break"]];
+    [self.startLongBreakMenuItem setImage:[imageLoader iconNamed:@"icon-start-long-break"]];
 }
 
 - (IBAction)startPomodoro:(id)sender
@@ -105,7 +106,7 @@
 
 - (IBAction)showPreferences:(id)sender
 {
-    if(!preferencesWindow)
+    if (!preferencesWindow)
     {
         preferencesWindow = [[TYPreferencesWindowController alloc] initWithPreferences:preferences];
     }

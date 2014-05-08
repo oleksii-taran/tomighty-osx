@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYTimerContext.h"
+#import "TYTimerContextProtocol.h"
 
 @interface TYDefaultTimerContext : NSObject <TYTimerContext>
 
-+ (id)ofType:(TYTimerContextType)contextType name:(NSString *)name remainingSeconds:(int)initialRemainingSeconds;
++ (instancetype)contextWithType:(TYTimerContextType)contextType name:(NSString *)name remainingSeconds:(int)initialRemainingSeconds;
 
 @end

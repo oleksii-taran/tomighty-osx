@@ -14,15 +14,15 @@
     int remainingSeconds;
 }
 
-+ (id)ofType:(TYTimerContextType)contextType name:(NSString *)name remainingSeconds:(int)initialRemainingSeconds
++ (instancetype)contextWithType:(TYTimerContextType)contextType name:(NSString *)name remainingSeconds:(int)initialRemainingSeconds
 {
-    return [[TYDefaultTimerContext alloc] initAs:contextType name:name remainingSeconds:initialRemainingSeconds];
+    return [[TYDefaultTimerContext alloc] initWithType:contextType name:name remainingSeconds:initialRemainingSeconds];
 }
 
-- (id)initAs:(TYTimerContextType)aContextType name:(NSString *)aName remainingSeconds:(int)initialRemainingSeconds
+- (instancetype)initWithType:(TYTimerContextType)aContextType name:(NSString *)aName remainingSeconds:(int)initialRemainingSeconds
 {
     self = [super init];
-    if(self) {
+    if (self) {
         contextType = aContextType;
         name = aName;
         remainingSeconds = initialRemainingSeconds;
@@ -30,12 +30,12 @@
     return self;
 }
 
-- (NSString *)getName
+- (NSString *)name
 {
     return name;
 }
 
-- (int)getRemainingSeconds
+- (int)remainingSeconds
 {
     return remainingSeconds;
 }
@@ -45,7 +45,7 @@
     remainingSeconds += seconds;
 }
 
-- (TYTimerContextType)getContextType
+- (TYTimerContextType)type
 {
     return contextType;
 }

@@ -10,7 +10,7 @@
 
 @interface TYPreferencesWindowController : NSWindowController
 
-- (id)initWithPreferences:(id <TYPreferences>)preferences;
+- (instancetype)initWithPreferences:(id <TYPreferences>)preferences;
 
 @property (weak) IBOutlet NSTextField *text_time_pomodoro;
 @property (weak) IBOutlet NSTextField *text_time_short_break;

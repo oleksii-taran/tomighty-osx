@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYTimerContext.h"
+#import "TYTimerContextProtocol.h"
 
 @interface TYMockTimerContext : NSObject <TYTimerContext>
 

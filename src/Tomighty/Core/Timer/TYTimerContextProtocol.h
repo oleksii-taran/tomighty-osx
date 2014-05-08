@@ -7,19 +7,19 @@
 
 #import <Foundation/Foundation.h>
 
-
 typedef NS_ENUM(NSInteger, TYTimerContextType)
 {
-    POMODORO,
-    SHORT_BREAK,
-    LONG_BREAK
+    TYTimerContextTypePomodoro,
+    TYTimerContextTypeShortBreak,
+    TYTimerContextTypeLongBreak,
 };
 
 @protocol TYTimerContext <NSObject>
 
-- (NSString *)getName;
-- (int)getRemainingSeconds;
+@property (nonatomic, strong, readonly) NSString *name;
+@property (nonatomic, assign, readonly) int remainingSeconds;
+@property (nonatomic, assign, readonly) TYTimerContextType type;
+
 - (void)addSeconds:(int)seconds;
-- (TYTimerContextType)getContextType;
 
 @end

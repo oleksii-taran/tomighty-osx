@@ -16,9 +16,9 @@
 #import "TYDefaultTomighty.h"
 #import "TYMockEventBus.h"
 #import "TYPreferences.h"
-#import "TYTimer.h"
-#import "TYTimerContext.h"
-#import "TYTomighty.h"
+#import "TYTimerProtocol.h"
+#import "TYTimerContextProtocol.h"
+#import "TYTomightyProtocol.h"
 
 @interface TYTomightyTests : XCTestCase
 
@@ -39,29 +39,29 @@
     timer = mockProtocol(@protocol(TYTimer));
     preferences = mockProtocol(@protocol(TYPreferences));
     eventBus = [[TYMockEventBus alloc] init];
-    tomighty = [[TYDefaultTomighty alloc] initWith:timer preferences:preferences eventBus:eventBus];
+    tomighty = [[TYDefaultTomighty alloc] initWithTimer:timer preferences:preferences eventBus:eventBus];
     timerContextArgument = [[MKTArgumentCaptor alloc] init];
     
-    [given([preferences getInt:PREF_TIME_POMODORO]) willReturnInt:25];
-    [given([preferences getInt:PREF_TIME_LONG_BREAK]) willReturnInt:15];
-    [given([preferences getInt:PREF_TIME_SHORT_BREAK]) willReturnInt:5];
+    [given([preferences intForKey:PREF_TIME_POMODORO]) willReturnInt:25];
+    [given([preferences intForKey:PREF_TIME_LONG_BREAK]) willReturnInt:15];
+    [given([preferences intForKey:PREF_TIME_SHORT_BREAK]) willReturnInt:5];
 }
 
 - (void)assertTimerContext:(id <TYTimerContext>)timerContext isOfType:(TYTimerContextType)type hasName:(NSString*)name hasRemainingSeconds:(int)remainingSeconds
 {
-    assertThat([timerContext getName], equalTo(name));
-    assertThatInt([timerContext getContextType], equalToInt(type));
-    assertThatInt([timerContext getRemainingSeconds], equalToInt(remainingSeconds));
+    assertThat(timerContext.name, equalTo(name));
+    assertThatInt(timerContext.type, equalToInt(type));
+    assertThatInt(timerContext.remainingSeconds, equalToInt(remainingSeconds));
 }
 
 - (void)test_start_timer_in_pomodoro_context_when_starting_a_pomodoro
 {
     [tomighty startPomodoro];
     
-    [verify(timer) start:[timerContextArgument capture]];
+    [verify(timer) startWithContext:[timerContextArgument capture]];
     
     [self assertTimerContext:[timerContextArgument value]
-                    isOfType:POMODORO
+                    isOfType:TYTimerContextTypePomodoro
                     hasName:@"Pomodoro"
                     hasRemainingSeconds:25 * 60];
 }
@@ -70,10 +70,10 @@
 {
     [tomighty startShortBreak];
     
-    [verify(timer) start:[timerContextArgument capture]];
+    [verify(timer) startWithContext:[timerContextArgument capture]];
     
     [self assertTimerContext:[timerContextArgument value]
-                    isOfType:SHORT_BREAK
+                    isOfType:TYTimerContextTypeShortBreak
                     hasName:@"Short break"
                     hasRemainingSeconds:5 * 60];
 }
@@ -82,10 +82,10 @@
 {
     [tomighty startLongBreak];
     
-    [verify(timer) start:[timerContextArgument capture]];
+    [verify(timer) startWithContext:[timerContextArgument capture]];
     
     [self assertTimerContext:[timerContextArgument value]
-                    isOfType:LONG_BREAK
+                    isOfType:TYTimerContextTypeLongBreak
                     hasName:@"Long break"
                     hasRemainingSeconds:15 * 60];
 }
@@ -102,48 +102,48 @@
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     
     
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
     
     expectedPomodoroCount = [NSNumber numberWithInt:1];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)2);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COMPLETE withData:timerContext atPosition:1]);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COUNT_CHANGE withData:expectedPomodoroCount atPosition:2]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroComplete withData:timerContext atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroCountChange withData:expectedPomodoroCount atPosition:2]);
     
     
     [eventBus clearPublishedEvents];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
     
     expectedPomodoroCount = [NSNumber numberWithInt:2];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)2);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COMPLETE withData:timerContext atPosition:1]);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COUNT_CHANGE withData:expectedPomodoroCount atPosition:2]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroComplete withData:timerContext atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroCountChange withData:expectedPomodoroCount atPosition:2]);
     
     
     [eventBus clearPublishedEvents];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
 
     expectedPomodoroCount = [NSNumber numberWithInt:3];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)2);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COMPLETE withData:timerContext atPosition:1]);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COUNT_CHANGE withData:expectedPomodoroCount atPosition:2]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroComplete withData:timerContext atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroCountChange withData:expectedPomodoroCount atPosition:2]);
 }
 
 - (void)test_set_pomodoro_count_back_to_one_when_a_pomodoro_completes_after_four_completed_pomodoros
 {
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
     
     [eventBus clearPublishedEvents];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
     
     NSNumber *expectedPomodoroCount = [NSNumber numberWithInt:1];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)2);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COMPLETE withData:timerContext atPosition:1]);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COUNT_CHANGE withData:expectedPomodoroCount atPosition:2]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroComplete withData:timerContext atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroCountChange withData:expectedPomodoroCount atPosition:2]);
 }
 
 - (void)test_reset_pomodoro_count
@@ -152,25 +152,25 @@
     
     NSNumber *expectedPomodoroCount = [NSNumber numberWithInt:0];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)1);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COUNT_CHANGE withData:expectedPomodoroCount atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroCountChange withData:expectedPomodoroCount atPosition:1]);
 }
 
 - (void)test_pomodoro_count_after_the_count_is_reset
 {
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
     
     [tomighty resetPomodoroCount];
     
     [eventBus clearPublishedEvents];
-    [eventBus publish:POMODORO_COMPLETE data:timerContext];
+    [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
     
     NSNumber *expectedPomodoroCount = [NSNumber numberWithInt:1];
     XCTAssertEqual([eventBus getPublishedEventCount], (NSUInteger)2);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COMPLETE withData:timerContext atPosition:1]);
-    XCTAssertTrue([eventBus hasPublishedEvent:POMODORO_COUNT_CHANGE withData:expectedPomodoroCount atPosition:2]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroComplete withData:timerContext atPosition:1]);
+    XCTAssertTrue([eventBus hasPublishedEvent:TYEventTypePomodoroCountChange withData:expectedPomodoroCount atPosition:2]);
 }
 
 @end

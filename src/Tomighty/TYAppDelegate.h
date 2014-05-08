@@ -7,8 +7,8 @@
 
 #import <AppKit/AppKit.h>
 
-#import "TYStatusMenu.h"
-#import "TYStatusIcon.h"
+#import "TYStatusMenuProtocol.h"
+#import "TYStatusIconProtocol.h"
 
 @interface TYAppDelegate : NSObject <NSApplicationDelegate, TYStatusMenu>
 

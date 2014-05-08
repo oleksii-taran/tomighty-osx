@@ -11,15 +11,15 @@
 
 int const ICON_SIZE = 16;
 
-- (NSImage*)loadIcon:(NSString*)name
+- (NSImage *)iconNamed:(NSString *)name
 {
-    return [self loadTiffImage:name withSize:ICON_SIZE];
+    return [self TIFFImageNamed:name size:ICON_SIZE];
 }
 
-- (NSImage*)loadTiffImage:(NSString*)name withSize:(int)widthAndHeight
+- (NSImage *)TIFFImageNamed:(NSString *)name size:(int)widthAndHeight
 {
-    NSString* fileName = [NSString stringWithFormat:@"%@.tiff", name];
-    NSImage* image = [NSImage imageNamed:fileName];
+    NSString *fileName = [NSString stringWithFormat:@"%@.tiff", name];
+    NSImage *image = [NSImage imageNamed:fileName];
     
     NSSize size;
     size.width = widthAndHeight;

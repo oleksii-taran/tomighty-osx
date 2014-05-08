@@ -6,13 +6,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 #import "TYPreferences.h"
-#import "TYSoundPlayer.h"
+#import "TYSoundPlayerProtocol.h"
 
 @interface TYSoundAgent : NSObject
 
-- (id)initWith:(id <TYSoundPlayer>)soundPlayer preferences:(id <TYPreferences>)preferences;
+- (instancetype)initWithSoundPlayer:(id <TYSoundPlayer>)soundPlayer preferences:(id <TYPreferences>)preferences;
 - (void)playSoundsInResponseToEventsFrom:(id <TYEventBus>)eventBus;
 
 @end

@@ -13,8 +13,8 @@ extern NSString * const SOUND_TIMER_GOES_OFF;
 
 @protocol TYSoundPlayer <NSObject>
 
-- (void)play:(NSString *)soundClipName;
-- (void)loop:(NSString *)soundClipName;
+- (void)playSoundWithName:(NSString *)soundClipName;
+- (void)loopSoundWithName:(NSString *)soundClipName;
 - (void)stopCurrentLoop;
 
 @end

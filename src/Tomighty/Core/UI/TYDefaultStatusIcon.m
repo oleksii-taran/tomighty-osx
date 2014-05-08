@@ -20,19 +20,19 @@ NSString * const ICON_STATUS_ALTERNATE = @"icon-status-alternate";
     TYImageLoader *imageLoader;
 }
 
-- (id)initWith:(NSMenu *)aMenu imageLoader:(TYImageLoader *)anImageLoader
+- (instancetype)initWithMenu:(NSMenu *)aMenu imageLoader:(TYImageLoader *)anImageLoader
 {
     self = [super init];
-    if(self)
+    if (self)
     {
         imageLoader = anImageLoader;
         iconImageCache = [[NSMutableDictionary alloc] initWithCapacity:8];
-        statusItem = [self createStatusItem:aMenu];
+        statusItem = [self statusItemWithMenu:aMenu];
     }
     return self;
 }
 
-- (NSStatusItem *)createStatusItem:(NSMenu *)menu
+- (NSStatusItem *)statusItemWithMenu:(NSMenu *)menu
 {
     NSStatusItem *newStatusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     
@@ -52,9 +52,9 @@ NSString * const ICON_STATUS_ALTERNATE = @"icon-status-alternate";
 - (NSImage *)getIconImage:(NSString *)iconName
 {
     NSImage *image = [iconImageCache objectForKey:iconName];
-    if(!image)
+    if (!image)
     {
-        image = [imageLoader loadIcon:iconName];
+        image = [imageLoader iconNamed:iconName];
         iconImageCache[iconName] = image;
     }
     return image;

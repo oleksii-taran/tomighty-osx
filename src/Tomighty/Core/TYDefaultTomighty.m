@@ -5,9 +5,9 @@
 //  http://www.apache.org/licenses/LICENSE-2.0.txt
 //
 
-#import "TYDefaultTimerContext.h"
 #import "TYDefaultTomighty.h"
-#import "TYEventBus.h"
+#import "TYDefaultTimerContext.h"
+#import "TYEventBusProtocol.h"
 #import "TYPreferences.h"
 
 @implementation TYDefaultTomighty
@@ -19,19 +19,17 @@
     id <TYEventBus> eventBus;
 }
 
-- (id)initWith:(id <TYTimer>)aTimer
-   preferences:(id <TYPreferences>)aPreferences
-      eventBus:(id <TYEventBus>)anEventBus
+- (instancetype)initWithTimer:(id <TYTimer>)aTimer preferences:(id <TYPreferences>)aPreferences eventBus:(id <TYEventBus>)anEventBus
 {
     self = [super init];
-    if(self)
+    if (self)
     {
         pomodoroCount = 0;
         timer = aTimer;
         preferences = aPreferences;
         eventBus = anEventBus;
         
-        [eventBus subscribeTo:POMODORO_COMPLETE subscriber:^(id eventData)
+        [eventBus addObserverForEventType:TYEventTypePomodoroComplete usingBlock:^(id eventData)
         {
             [self incrementPomodoroCount];
         }];
@@ -39,37 +37,25 @@
     return self;
 }
 
-- (void)startTimer:(TYTimerContextType)contextType
-       contextName:(NSString *)contextName
-           minutes:(int)minutes
+- (void)startTimerWithContextType:(TYTimerContextType)contextType name:(NSString *)contextName minutes:(int)minutes
 {
-    id <TYTimerContext> timerContext = [TYDefaultTimerContext
-                                        ofType:contextType
-                                        name:contextName
-                                        remainingSeconds:minutes * 60];
-    [timer start:timerContext];
+    id <TYTimerContext> timerContext = [TYDefaultTimerContext contextWithType:contextType name:contextName remainingSeconds:minutes * 60];
+    [timer startWithContext:timerContext];
 }
 
 - (void)startPomodoro
 {
-    [self startTimer:POMODORO
-         contextName:@"Pomodoro"
-             minutes:[preferences getInt:PREF_TIME_POMODORO]];
+    [self startTimerWithContextType:TYTimerContextTypePomodoro name:@"Pomodoro" minutes:[preferences intForKey:PREF_TIME_POMODORO]];
 }
 
 - (void)startShortBreak
 {
-    [self startTimer:SHORT_BREAK
-         contextName:@"Short break"
-             minutes:[preferences getInt:PREF_TIME_SHORT_BREAK]];
+    [self startTimerWithContextType:TYTimerContextTypeShortBreak name:@"Short break" minutes:[preferences intForKey:PREF_TIME_SHORT_BREAK]];
 }
 
 - (void)startLongBreak
 {
-    [self startTimer:LONG_BREAK
-         contextName:@"Long break"
-             minutes:[preferences getInt:PREF_TIME_LONG_BREAK]];
-
+    [self startTimerWithContextType:TYTimerContextTypeLongBreak name:@"Long break" minutes:[preferences intForKey:PREF_TIME_LONG_BREAK]];
 }
 
 - (void)stopTimer
@@ -80,7 +66,7 @@
 - (void)setPomodoroCount:(int)newCount
 {
     pomodoroCount = newCount;
-    [eventBus publish:POMODORO_COUNT_CHANGE data:[NSNumber numberWithInt:pomodoroCount]];
+    [eventBus publishEventWithType:TYEventTypePomodoroCountChange data:[NSNumber numberWithInt:pomodoroCount]];
 }
 
 - (void)resetPomodoroCount
@@ -92,7 +78,7 @@
 {
     int newCount = pomodoroCount + 1;
     
-    if(newCount > 4)
+    if (newCount > 4)
     {
         newCount = 1;
     }

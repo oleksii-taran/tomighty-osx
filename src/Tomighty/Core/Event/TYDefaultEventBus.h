@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 
 @interface TYDefaultEventBus : NSObject <TYEventBus>
 

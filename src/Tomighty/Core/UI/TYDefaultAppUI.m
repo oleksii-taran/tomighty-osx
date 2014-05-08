@@ -13,10 +13,10 @@
     id <TYStatusIcon> statusIcon;
 }
 
-- (id)initWith:(id <TYStatusMenu>)aStatusMenu statusIcon:(id<TYStatusIcon>)aStatusIcon
+- (instancetype)initWithStatusMenu:(id <TYStatusMenu>)aStatusMenu statusIcon:(id<TYStatusIcon>)aStatusIcon
 {
     self = [super init];
-    if(self)
+    if (self)
     {
         statusMenu = aStatusMenu;
         statusIcon = aStatusIcon;

@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYSystemTimer.h"
+#import "TYSystemTimerProtocol.h"
 
 @interface TYDefaultSystemTimer : NSObject <TYSystemTimer>
 

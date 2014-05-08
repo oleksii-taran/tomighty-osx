@@ -6,46 +6,46 @@
 //
 
 #import "TYSyntheticEventPublisher.h"
-#import "TYTimerContext.h"
+#import "TYTimerContextProtocol.h"
 
 @implementation TYSyntheticEventPublisher
 
 - (void)publishSyntheticEventsInResponseToOtherEventsFrom:(id <TYEventBus>)eventBus
 {
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
     {
         id <TYTimerContext> timerContext = eventData;
         
-        if([timerContext getContextType] == POMODORO)
+        if (timerContext.type == TYTimerContextTypePomodoro)
         {
-            [eventBus publish:POMODORO_START data:timerContext];
+            [eventBus publishEventWithType:TYEventTypePomodoroStart data:timerContext];
         }
-        else if([timerContext getContextType] == SHORT_BREAK)
+        else if (timerContext.type == TYTimerContextTypeShortBreak)
         {
-            [eventBus publish:BREAK_START data:timerContext];
-            [eventBus publish:SHORT_BREAK_START data:timerContext];
+            [eventBus publishEventWithType:TYEventTypeBreakStart data:timerContext];
+            [eventBus publishEventWithType:TYEventTypeShortBreakStart data:timerContext];
         }
-        else if([timerContext getContextType] == LONG_BREAK)
+        else if (timerContext.type == TYTimerContextTypeLongBreak)
         {
-            [eventBus publish:BREAK_START data:timerContext];
-            [eventBus publish:LONG_BREAK_START data:timerContext];
+            [eventBus publishEventWithType:TYEventTypeBreakStart data:timerContext];
+            [eventBus publishEventWithType:TYEventTypeLongBreakStart data:timerContext];
         }
     }];
     
-    [eventBus subscribeTo:TIMER_STOP subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStop usingBlock:^(id eventData)
     {
         id <TYTimerContext> timerContext = eventData;
         
-        if([timerContext getRemainingSeconds] > 0)
+        if (timerContext.remainingSeconds > 0)
         {
-            [eventBus publish:TIMER_ABORT data:eventData];
+            [eventBus publishEventWithType:TYEventTypeTimerAbort data:eventData];
         }
         else
         {
-            [eventBus publish:TIMER_GOES_OFF data:eventData];
-            if([timerContext getContextType] == POMODORO)
+            [eventBus publishEventWithType:TYEventTypeTimerGoesOff data:eventData];
+            if (timerContext.type == TYTimerContextTypePomodoro)
             {
-                [eventBus publish:POMODORO_COMPLETE data:timerContext];
+                [eventBus publishEventWithType:TYEventTypePomodoroComplete data:timerContext];
             }
         }
     }];

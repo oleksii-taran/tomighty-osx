@@ -7,11 +7,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 #import "TYPreferences.h"
 
 @interface TYUserDefaultsPreferences : NSObject <TYPreferences>
 
-- (id)initWith:(id <TYEventBus>)anEventBus;
+- (id)initWithEventBus:(id <TYEventBus>)anEventBus;
 
 @end

@@ -6,14 +6,14 @@
 //
 
 #import "TYUserInterfaceAgent.h"
-#import "TYTimerContext.h"
+#import "TYTimerContextProtocol.h"
 
 @implementation TYUserInterfaceAgent
 {
     id <TYAppUI> ui;
 }
 
-- (id)initWith:(id <TYAppUI>)theAppUI
+- (instancetype)initWithApplicationUI:(id <TYAppUI>)theAppUI
 {
     self = [super init];
     if(self)
@@ -23,36 +23,36 @@
     return self;
 }
 
-- (void)updateAppUiInResponseToEventsFrom:(id <TYEventBus>)eventBus
+- (void)updateAppUiInResponseToEventsFromEventBus:(id <TYEventBus>)eventBus
 {
-    [eventBus subscribeTo:APP_INIT subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypeApplicationInit usingBlock:^(id eventData) {
         [ui switchToIdleState];
         [ui updateRemainingTime:0];
         [ui updatePomodoroCount:0];
     }];
 
-    [eventBus subscribeTo:POMODORO_START subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypePomodoroStart usingBlock:^(id eventData) {
         [ui switchToPomodoroState];
     }];
     
-    [eventBus subscribeTo:TIMER_STOP subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypeTimerStop usingBlock:^(id eventData) {
         [ui switchToIdleState];
     }];
     
-    [eventBus subscribeTo:SHORT_BREAK_START subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypeShortBreakStart usingBlock:^(id eventData) {
         [ui switchToShortBreakState];
     }];
     
-    [eventBus subscribeTo:LONG_BREAK_START subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypeLongBreakStart usingBlock:^(id eventData) {
         [ui switchToLongBreakState];
     }];
     
-    [eventBus subscribeTo:TIMER_TICK subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypeTimerTick usingBlock:^(id eventData) {
         id <TYTimerContext> timerContext = eventData;
-        [ui updateRemainingTime:[timerContext getRemainingSeconds]];
+        [ui updateRemainingTime:timerContext.remainingSeconds];
     }];
     
-    [eventBus subscribeTo:POMODORO_COUNT_CHANGE subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypePomodoroCountChange usingBlock:^(id eventData) {
         NSNumber *pomodoroCount = eventData;
         [ui updatePomodoroCount:[pomodoroCount intValue]];
     }];

@@ -6,7 +6,7 @@
 //
 
 #import "TYUserDefaultsPreferences.h"
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 
 NSString * const PREF_TIME_POMODORO            = @"org.tomighty.time.pomodoro";
 NSString * const PREF_TIME_SHORT_BREAK         = @"org.tomighty.time.short_break";
@@ -21,10 +21,10 @@ NSString * const PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK     = @"org.tomighty.soun
     id <TYEventBus> eventBus;
 }
 
-- (id)initWith:(id <TYEventBus>)anEventBus
+- (id)initWithEventBus:(id <TYEventBus>)anEventBus
 {
     self = [super init];
-    if(self)
+    if (self)
     {
         eventBus = anEventBus;
         
@@ -43,18 +43,18 @@ NSString * const PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK     = @"org.tomighty.soun
     return self;
 }
 
-- (int)getInt:(NSString *)key
+- (int)intForKey:(NSString *)key
 {
     return (int)[[NSUserDefaults standardUserDefaults] integerForKey:key];
 }
 
-- (void)setInt:(NSString *)key value:(int)value
+- (void)setInt:(int)value forKey:(NSString *)key
 {
-    int actualValue = [self getInt:key];
-    if(value != actualValue)
+    int actualValue = [self intForKey:key];
+    if (value != actualValue)
     {
         [[NSUserDefaults standardUserDefaults] setInteger:value forKey:key];
-        [eventBus publish:PREFERENCE_CHANGE data:key];
+        [eventBus publishEventWithType:TYEventTypePreferencesDidChange data:key];
     }
 }
 

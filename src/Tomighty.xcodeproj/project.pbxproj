@@ -91,7 +91,7 @@
 		300AE29418D1471F00264309 /* TYPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYPreferencesWindowController.m; path = Core/UI/TYPreferencesWindowController.m; sourceTree = "<group>"; };
 		301A007718BD417200B8DEE0 /* TYDefaultTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultTimer.h; path = Core/Timer/TYDefaultTimer.h; sourceTree = "<group>"; };
 		301A007818BD417200B8DEE0 /* TYDefaultTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultTimer.m; path = Core/Timer/TYDefaultTimer.m; sourceTree = "<group>"; };
-		301A007B18BD421500B8DEE0 /* TYTimerContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYTimerContext.h; path = Core/Timer/TYTimerContext.h; sourceTree = "<group>"; };
+		301A007B18BD421500B8DEE0 /* TYTimerContextProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYTimerContextProtocol.h; path = Core/Timer/TYTimerContextProtocol.h; sourceTree = "<group>"; };
 		3025AE5118D35B2B00BC4207 /* TYSoundAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYSoundAgent.h; path = Core/Agent/TYSoundAgent.h; sourceTree = "<group>"; };
 		3025AE5218D35B2B00BC4207 /* TYSoundAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYSoundAgent.m; path = Core/Agent/TYSoundAgent.m; sourceTree = "<group>"; };
 		3025AE5318D35B2B00BC4207 /* TYUserInterfaceAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYUserInterfaceAgent.h; path = Core/Agent/TYUserInterfaceAgent.h; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 		3032EEEC18C6C28700070BD2 /* TYPublishedEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYPublishedEvent.m; path = Mock/TYPublishedEvent.m; sourceTree = "<group>"; };
 		3039D2F218C4DF7C008689C9 /* TYDefaultEventBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultEventBus.h; path = Core/Event/TYDefaultEventBus.h; sourceTree = "<group>"; };
 		3039D2F318C4DF7C008689C9 /* TYDefaultEventBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultEventBus.m; path = Core/Event/TYDefaultEventBus.m; sourceTree = "<group>"; };
-		3039D2F418C4DF7C008689C9 /* TYEventBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYEventBus.h; path = Core/Event/TYEventBus.h; sourceTree = "<group>"; };
+		3039D2F418C4DF7C008689C9 /* TYEventBusProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYEventBusProtocol.h; path = Core/Event/TYEventBusProtocol.h; sourceTree = "<group>"; };
 		3039D2F718C4DFCE008689C9 /* TYEventBusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYEventBusTests.m; path = Core/Event/TYEventBusTests.m; sourceTree = "<group>"; };
 		30415FAD18C5109D0069FAE3 /* TYPreferencesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYPreferencesTests.m; path = Core/Preferences/TYPreferencesTests.m; sourceTree = "<group>"; };
 		30415FB018C51B6A0069FAE3 /* TYPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYPreferences.h; path = Core/Preferences/TYPreferences.h; sourceTree = "<group>"; };
@@ -131,8 +131,8 @@
 		304AF83418BD04BE00A2EA74 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		304AF83B18BD04BF00A2EA74 /* TomightyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TomightyTests-Info.plist"; sourceTree = "<group>"; };
 		304AF83D18BD04BF00A2EA74 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		305D161418CCEE3500CE6A34 /* TYTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYTimer.h; path = Core/Timer/TYTimer.h; sourceTree = "<group>"; };
-		305D161618CD02E100CE6A34 /* TYAppUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYAppUI.h; path = Core/UI/TYAppUI.h; sourceTree = "<group>"; };
+		305D161418CCEE3500CE6A34 /* TYTimerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYTimerProtocol.h; path = Core/Timer/TYTimerProtocol.h; sourceTree = "<group>"; };
+		305D161618CD02E100CE6A34 /* TYAppUIProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYAppUIProtocol.h; path = Core/UI/TYAppUIProtocol.h; sourceTree = "<group>"; };
 		305D161D18CD13F100CE6A34 /* tomighty.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = tomighty.icns; sourceTree = "<group>"; };
 		309394E518D0C76100D6C71A /* TYDefaultStatusIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultStatusIcon.h; path = Core/UI/TYDefaultStatusIcon.h; sourceTree = "<group>"; };
 		309394E618D0C76100D6C71A /* TYDefaultStatusIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultStatusIcon.m; path = Core/UI/TYDefaultStatusIcon.m; sourceTree = "<group>"; };
@@ -142,14 +142,14 @@
 		309ECAFC18C36F6300B270BF /* TYMockTimerContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYMockTimerContext.m; path = Mock/TYMockTimerContext.m; sourceTree = "<group>"; };
 		309ECB0118C3828B00B270BF /* TYDefaultSystemTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultSystemTimer.h; path = Core/Timer/TYDefaultSystemTimer.h; sourceTree = "<group>"; };
 		309ECB0218C3828B00B270BF /* TYDefaultSystemTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultSystemTimer.m; path = Core/Timer/TYDefaultSystemTimer.m; sourceTree = "<group>"; };
-		309ECB0318C3828B00B270BF /* TYSystemTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYSystemTimer.h; path = Core/Timer/TYSystemTimer.h; sourceTree = "<group>"; };
+		309ECB0318C3828B00B270BF /* TYSystemTimerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYSystemTimerProtocol.h; path = Core/Timer/TYSystemTimerProtocol.h; sourceTree = "<group>"; };
 		309ECB0718C382CF00B270BF /* TYTimerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYTimerTests.m; path = Core/Timer/TYTimerTests.m; sourceTree = "<group>"; };
 		309ECB0918C3830B00B270BF /* TYTimerContextTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYTimerContextTests.m; path = Core/Timer/TYTimerContextTests.m; sourceTree = "<group>"; };
 		30B89F9C18C3855600C1DD2B /* TYDefaultTimerContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultTimerContext.h; path = Core/Timer/TYDefaultTimerContext.h; sourceTree = "<group>"; };
 		30B89F9D18C3855600C1DD2B /* TYDefaultTimerContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultTimerContext.m; path = Core/Timer/TYDefaultTimerContext.m; sourceTree = "<group>"; };
 		30BD314118C556EE00428B1E /* TYMockEventBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYMockEventBus.h; path = Mock/TYMockEventBus.h; sourceTree = "<group>"; };
 		30BD314218C556EE00428B1E /* TYMockEventBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYMockEventBus.m; path = Mock/TYMockEventBus.m; sourceTree = "<group>"; };
-		30BD314B18C5686500428B1E /* TYSoundPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYSoundPlayer.h; path = Core/Sound/TYSoundPlayer.h; sourceTree = "<group>"; };
+		30BD314B18C5686500428B1E /* TYSoundPlayerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYSoundPlayerProtocol.h; path = Core/Sound/TYSoundPlayerProtocol.h; sourceTree = "<group>"; };
 		30C383BF18CFC9FC00FABFFE /* icon-clock.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "icon-clock.tiff"; path = "Icons/icon-clock.tiff"; sourceTree = SOURCE_ROOT; };
 		30C383C018CFC9FC00FABFFE /* icon-start-long-break.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "icon-start-long-break.tiff"; path = "Icons/icon-start-long-break.tiff"; sourceTree = SOURCE_ROOT; };
 		30C383C118CFC9FC00FABFFE /* icon-start-pomodoro.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "icon-start-pomodoro.tiff"; path = "Icons/icon-start-pomodoro.tiff"; sourceTree = SOURCE_ROOT; };
@@ -164,14 +164,14 @@
 		30C383D518CFCA6B00FABFFE /* timer_goes_off.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = timer_goes_off.wav; path = Sound/timer_goes_off.wav; sourceTree = SOURCE_ROOT; };
 		30C383D618CFCA6B00FABFFE /* timer_tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = timer_tick.wav; path = Sound/timer_tick.wav; sourceTree = SOURCE_ROOT; };
 		30C383DB18CFDE8F00FABFFE /* TYAppUITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYAppUITests.m; path = Core/UI/TYAppUITests.m; sourceTree = "<group>"; };
-		30C383DD18CFDFF000FABFFE /* TYStatusMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYStatusMenu.h; path = Core/UI/TYStatusMenu.h; sourceTree = "<group>"; };
+		30C383DD18CFDFF000FABFFE /* TYStatusMenuProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYStatusMenuProtocol.h; path = Core/UI/TYStatusMenuProtocol.h; sourceTree = "<group>"; };
 		30C383DE18CFE02100FABFFE /* TYDefaultAppUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultAppUI.h; path = Core/UI/TYDefaultAppUI.h; sourceTree = "<group>"; };
 		30C383DF18CFE02100FABFFE /* TYDefaultAppUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultAppUI.m; path = Core/UI/TYDefaultAppUI.m; sourceTree = "<group>"; };
-		30C383E118CFE34700FABFFE /* TYStatusIcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYStatusIcon.h; path = Core/UI/TYStatusIcon.h; sourceTree = "<group>"; };
+		30C383E118CFE34700FABFFE /* TYStatusIconProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYStatusIconProtocol.h; path = Core/UI/TYStatusIconProtocol.h; sourceTree = "<group>"; };
 		30CFBF1018BD76F7000266B4 /* TYMockSystemTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYMockSystemTimer.h; path = Mock/TYMockSystemTimer.h; sourceTree = "<group>"; };
 		30CFBF1118BD76F7000266B4 /* TYMockSystemTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYMockSystemTimer.m; path = Mock/TYMockSystemTimer.m; sourceTree = "<group>"; };
 		30DB72F518CD4FC800293915 /* TYTomightyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYTomightyTests.m; path = Core/TYTomightyTests.m; sourceTree = "<group>"; };
-		30DB72F718CD54C000293915 /* TYTomighty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYTomighty.h; path = Core/TYTomighty.h; sourceTree = "<group>"; };
+		30DB72F718CD54C000293915 /* TYTomightyProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TYTomightyProtocol.h; path = Core/TYTomightyProtocol.h; sourceTree = "<group>"; };
 		30DB72F818CD54D200293915 /* TYDefaultTomighty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TYDefaultTomighty.h; path = Core/TYDefaultTomighty.h; sourceTree = "<group>"; };
 		30DB72F918CD54D200293915 /* TYDefaultTomighty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TYDefaultTomighty.m; path = Core/TYDefaultTomighty.m; sourceTree = "<group>"; };
 		C85B4050EDD04BD5964B5A05 /* Pods-TomightyTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TomightyTests.xcconfig"; path = "../Pods/Pods-TomightyTests.xcconfig"; sourceTree = "<group>"; };
@@ -202,13 +202,13 @@
 		301A007618BD413400B8DEE0 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
-				309ECB0318C3828B00B270BF /* TYSystemTimer.h */,
+				309ECB0318C3828B00B270BF /* TYSystemTimerProtocol.h */,
 				309ECB0118C3828B00B270BF /* TYDefaultSystemTimer.h */,
 				309ECB0218C3828B00B270BF /* TYDefaultSystemTimer.m */,
-				305D161418CCEE3500CE6A34 /* TYTimer.h */,
+				305D161418CCEE3500CE6A34 /* TYTimerProtocol.h */,
 				301A007718BD417200B8DEE0 /* TYDefaultTimer.h */,
 				301A007818BD417200B8DEE0 /* TYDefaultTimer.m */,
-				301A007B18BD421500B8DEE0 /* TYTimerContext.h */,
+				301A007B18BD421500B8DEE0 /* TYTimerContextProtocol.h */,
 				30B89F9C18C3855600C1DD2B /* TYDefaultTimerContext.h */,
 				30B89F9D18C3855600C1DD2B /* TYDefaultTimerContext.m */,
 			);
@@ -240,7 +240,7 @@
 			children = (
 				3025AE5718D35B3700BC4207 /* TYSyntheticEventPublisher.h */,
 				3025AE5818D35B3700BC4207 /* TYSyntheticEventPublisher.m */,
-				3039D2F418C4DF7C008689C9 /* TYEventBus.h */,
+				3039D2F418C4DF7C008689C9 /* TYEventBusProtocol.h */,
 				3039D2F218C4DF7C008689C9 /* TYDefaultEventBus.h */,
 				3039D2F318C4DF7C008689C9 /* TYDefaultEventBus.m */,
 			);
@@ -372,7 +372,7 @@
 				30BD314718C566B400428B1E /* Sound */,
 				301A007618BD413400B8DEE0 /* Timer */,
 				305D161518CD029F00CE6A34 /* UI */,
-				30DB72F718CD54C000293915 /* TYTomighty.h */,
+				30DB72F718CD54C000293915 /* TYTomightyProtocol.h */,
 				30DB72F818CD54D200293915 /* TYDefaultTomighty.h */,
 				30DB72F918CD54D200293915 /* TYDefaultTomighty.m */,
 			);
@@ -382,11 +382,11 @@
 		305D161518CD029F00CE6A34 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				305D161618CD02E100CE6A34 /* TYAppUI.h */,
+				305D161618CD02E100CE6A34 /* TYAppUIProtocol.h */,
 				30C383DE18CFE02100FABFFE /* TYDefaultAppUI.h */,
 				30C383DF18CFE02100FABFFE /* TYDefaultAppUI.m */,
-				30C383DD18CFDFF000FABFFE /* TYStatusMenu.h */,
-				30C383E118CFE34700FABFFE /* TYStatusIcon.h */,
+				30C383DD18CFDFF000FABFFE /* TYStatusMenuProtocol.h */,
+				30C383E118CFE34700FABFFE /* TYStatusIconProtocol.h */,
 				309394E518D0C76100D6C71A /* TYDefaultStatusIcon.h */,
 				309394E618D0C76100D6C71A /* TYDefaultStatusIcon.m */,
 				309394E818D0CBEC00D6C71A /* TYImageLoader.h */,
@@ -440,7 +440,7 @@
 		30BD314718C566B400428B1E /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				30BD314B18C5686500428B1E /* TYSoundPlayer.h */,
+				30BD314B18C5686500428B1E /* TYSoundPlayerProtocol.h */,
 				3032EEE118C6AF2C00070BD2 /* TYDefaultSoundPlayer.h */,
 				3032EEE218C6AF2C00070BD2 /* TYDefaultSoundPlayer.m */,
 			);

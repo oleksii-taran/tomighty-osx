@@ -17,7 +17,7 @@ extern NSString * const PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK;
 
 @protocol TYPreferences <NSObject>
 
-- (int)getInt:(NSString *)key;
-- (void)setInt:(NSString *)key value:(int)value;
+- (int)intForKey:(NSString *)key;
+- (void)setInt:(int)value forKey:(NSString *)key;
 
 @end

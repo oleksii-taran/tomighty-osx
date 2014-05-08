@@ -25,12 +25,12 @@
     return self;
 }
 
-- (void)subscribeTo:(TYEventType)eventType subscriber:(TYEventSubscriber)subscriber
+- (void)addObserverForEventType:(TYEventType)eventType usingBlock:(TYEventSubscriber)subscriber
 {
     subscribers[@(eventType)] = subscriber;
 }
 
-- (void)publish:(TYEventType)eventType data:(id)data
+- (void)publishEventWithType:(TYEventType)eventType data:(id)data
 {
     [publishedEvents addObject:[[TYPublishedEvent alloc] initWith:eventType data:data]];
     

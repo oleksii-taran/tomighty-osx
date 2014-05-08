@@ -7,15 +7,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TYEventBus.h"
+#import "TYTomightyProtocol.h"
+#import "TYEventBusProtocol.h"
 #import "TYPreferences.h"
-#import "TYTimer.h"
-#import "TYTomighty.h"
+#import "TYTimerProtocol.h"
 
 @interface TYDefaultTomighty : NSObject <TYTomighty>
 
-- (id)initWith:(id <TYTimer>)timer
-   preferences:(id <TYPreferences>)preferences
-      eventBus:(id <TYEventBus>)eventBus;
+- (instancetype)initWithTimer:(id <TYTimer>)timer preferences:(id <TYPreferences>)preferences eventBus:(id <TYEventBus>)eventBus;
 
 @end

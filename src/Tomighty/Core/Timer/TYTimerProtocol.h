@@ -6,12 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYTimer.h"
-#import "TYTimerContext.h"
+#import "TYTimerProtocol.h"
+#import "TYTimerContextProtocol.h"
 
 @protocol TYTimer <NSObject>
 
-- (void)start:(id<TYTimerContext>)context;
+- (void)startWithContext:(id<TYTimerContext>)context;
 - (void)stop;
 
 @end

@@ -6,7 +6,6 @@
 //
 
 #import "TYSoundAgent.h"
-#import "TYTimerContext.h"
 
 @implementation TYSoundAgent
 {
@@ -14,10 +13,10 @@
     id <TYPreferences> preferences;
 }
 
-- (id)initWith:(id <TYSoundPlayer>)aSoundPlayer preferences:(id <TYPreferences>)aPreferences
+- (instancetype)initWithSoundPlayer:(id <TYSoundPlayer>)aSoundPlayer preferences:(id <TYPreferences>)aPreferences
 {
     self = [super self];
-    if(self)
+    if (self)
     {
         soundPlayer = aSoundPlayer;
         preferences = aPreferences;
@@ -27,39 +26,39 @@
 
 - (void)playSoundsInResponseToEventsFrom:(id <TYEventBus>)eventBus
 {
-    [eventBus subscribeTo:TIMER_START subscriber:^(id timerContext)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id timerContext)
     {
-        if([preferences getInt:PREF_PLAY_SOUND_WHEN_TIMER_STARTS])
+        if([preferences intForKey:PREF_PLAY_SOUND_WHEN_TIMER_STARTS])
         {
-            [soundPlayer play:SOUND_TIMER_START];
+            [soundPlayer playSoundWithName:SOUND_TIMER_START];
         }
     }];
     
-    [eventBus subscribeTo:TIMER_STOP subscriber:^(id eventData) {
+    [eventBus addObserverForEventType:TYEventTypeTimerStop usingBlock:^(id eventData) {
         [soundPlayer stopCurrentLoop];
     }];
     
-    [eventBus subscribeTo:POMODORO_START subscriber:^(id timerContext)
+    [eventBus addObserverForEventType:TYEventTypePomodoroStart usingBlock:^(id timerContext)
     {
-        if([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO])
+        if ([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_POMODORO])
         {
-            [soundPlayer loop:SOUND_TIMER_TICK];
+            [soundPlayer loopSoundWithName:SOUND_TIMER_TICK];
         }
     }];
     
-    [eventBus subscribeTo:BREAK_START subscriber:^(id timerContext)
+    [eventBus addObserverForEventType:TYEventTypeBreakStart usingBlock:^(id timerContext)
     {
-        if([preferences getInt:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK])
+        if ([preferences intForKey:PREF_PLAY_TICKTOCK_SOUND_DURING_BREAK])
         {
-            [soundPlayer loop:SOUND_TIMER_TICK];
+            [soundPlayer loopSoundWithName:SOUND_TIMER_TICK];
         }
     }];
     
-    [eventBus subscribeTo:TIMER_GOES_OFF subscriber:^(id timerContext)
+    [eventBus addObserverForEventType:TYEventTypeTimerGoesOff usingBlock:^(id timerContext)
     {
-        if([preferences getInt:PREF_PLAY_SOUND_WHEN_TIMER_GOES_OFF])
+        if ([preferences intForKey:PREF_PLAY_SOUND_WHEN_TIMER_GOES_OFF])
         {
-            [soundPlayer play:SOUND_TIMER_GOES_OFF];
+            [soundPlayer playSoundWithName:SOUND_TIMER_GOES_OFF];
         }
     }];
 }

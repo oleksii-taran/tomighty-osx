@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 
 @interface TYSyntheticEventPublisher : NSObject
 

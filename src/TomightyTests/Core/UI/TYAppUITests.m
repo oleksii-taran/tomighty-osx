@@ -13,10 +13,10 @@
 
 #import <XCTest/XCTest.h>
 
-#import "TYAppUI.h"
+#import "TYAppUIProtocol.h"
 #import "TYDefaultAppUI.h"
-#import "TYStatusIcon.h"
-#import "TYStatusMenu.h"
+#import "TYStatusIconProtocol.h"
+#import "TYStatusMenuProtocol.h"
 
 @interface TYAppUITests : XCTestCase
 
@@ -34,7 +34,7 @@
     [super setUp];
     statusMenu = mockProtocol(@protocol(TYStatusMenu));
     statusIcon = mockProtocol(@protocol(TYStatusIcon));
-    appUi = [[TYDefaultAppUI alloc] initWith:statusMenu statusIcon:statusIcon];
+    appUi = [[TYDefaultAppUI alloc] initWithStatusMenu:statusMenu statusIcon:statusIcon];
 }
 
 - (void)test_switch_to_idle_state

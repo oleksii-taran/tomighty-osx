@@ -13,11 +13,11 @@
 
 #import <XCTest/XCTest.h>
 
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 #import "TYDefaultTimer.h"
-#import "TYTimer.h"
-#import "TYTimerContext.h"
-#import "TYSystemTimer.h"
+#import "TYTimerProtocol.h"
+#import "TYTimerContextProtocol.h"
+#import "TYSystemTimerProtocol.h"
 #import "TYMockSystemTimer.h"
 #import "TYMockTimerContext.h"
 
@@ -32,9 +32,9 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     id <TYSystemTimer> systemTimer = mockProtocol(@protocol(TYSystemTimer));
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
 
-    [timer start:timerContext];
+    [timer startWithContext:timerContext];
     
     [verify(systemTimer) triggerRepeatedly:anything() intervalInSeconds:1];
 }
@@ -43,7 +43,7 @@
 {
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     id <TYSystemTimer> systemTimer = mockProtocol(@protocol(TYSystemTimer));
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
 
     [timer stop];
     
@@ -55,11 +55,11 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     id <TYSystemTimer> systemTimer = mockProtocol(@protocol(TYSystemTimer));
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
     
-    [timer start:timerContext];
+    [timer startWithContext:timerContext];
     
-    [verify(eventBus) publish:TIMER_START data:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerStart data:timerContext];
 }
 
 - (void)test_fire_TIMER_STOP_event_on_stop
@@ -67,13 +67,13 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     id <TYSystemTimer> systemTimer = mockProtocol(@protocol(TYSystemTimer));
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
     
-    [timer start:timerContext];
-    [verify(eventBus) publish:TIMER_START data:timerContext];
+    [timer startWithContext:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerStart data:timerContext];
     
     [timer stop];
-    [verify(eventBus) publish:TIMER_STOP data:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerStop data:timerContext];
 }
 
 - (void)test_fire_TIMER_TICK_event_each_time_a_second_ellapses
@@ -81,21 +81,21 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     TYMockSystemTimer *systemTimer = [[TYMockSystemTimer alloc] init];
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
 
-    [given([timerContext getRemainingSeconds]) willReturnInt:999];
+    [given(timerContext.remainingSeconds) willReturnInt:999];
 
-    [timer start:timerContext];
-    [verify(eventBus) publish:TIMER_START data:timerContext];
+    [timer startWithContext:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerStart data:timerContext];
     
     [systemTimer tick];
-    [verify(eventBus) publish:TIMER_TICK data:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerTick data:timerContext];
     
     [systemTimer tick];
-    [verifyCount(eventBus, times(2)) publish:TIMER_TICK data:timerContext];
+    [verifyCount(eventBus, times(2)) publishEventWithType:TYEventTypeTimerTick data:timerContext];
     
     [systemTimer tick];
-    [verifyCount(eventBus, times(3)) publish:TIMER_TICK data:timerContext];
+    [verifyCount(eventBus, times(3)) publishEventWithType:TYEventTypeTimerTick data:timerContext];
 }
 
 - (void)test_subtract_one_second_from_the_timer_context_each_time_a_second_ellapses
@@ -103,11 +103,11 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     id <TYTimerContext> timerContext = mockProtocol(@protocol(TYTimerContext));
     TYMockSystemTimer *systemTimer = [[TYMockSystemTimer alloc] init];
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
     
-    [given([timerContext getRemainingSeconds]) willReturnInt:999];
+    [given(timerContext.remainingSeconds) willReturnInt:999];
     
-    [timer start:timerContext];
+    [timer startWithContext:timerContext];
     
     [systemTimer tick];
     [verify(timerContext) addSeconds:-1];
@@ -124,19 +124,19 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     TYMockTimerContext *timerContext = [[TYMockTimerContext alloc] initWithRemainingSeconds:3];
     TYMockSystemTimer *systemTimer = [[TYMockSystemTimer alloc] init];
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
     
-    [timer start:timerContext];
-    [verify(eventBus) publish:TIMER_START data:timerContext];
-    
-    [systemTimer tick];
-    [verify(eventBus) publish:TIMER_TICK data:timerContext];
+    [timer startWithContext:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerStart data:timerContext];
     
     [systemTimer tick];
-    [verifyCount(eventBus, times(2)) publish:TIMER_TICK data:timerContext];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerTick data:timerContext];
     
     [systemTimer tick];
-    [verify(eventBus) publish:TIMER_STOP data:timerContext];
+    [verifyCount(eventBus, times(2)) publishEventWithType:TYEventTypeTimerTick data:timerContext];
+    
+    [systemTimer tick];
+    [verify(eventBus) publishEventWithType:TYEventTypeTimerStop data:timerContext];
 }
 
 - (void)test_interrupt_system_timer_when_timer_goes_off
@@ -144,9 +144,9 @@
     id <TYEventBus> eventBus = mockProtocol(@protocol(TYEventBus));
     TYMockTimerContext *timerContext = [[TYMockTimerContext alloc] initWithRemainingSeconds:3];
     TYMockSystemTimer *systemTimer = [[TYMockSystemTimer alloc] init];
-    id <TYTimer> timer = [TYDefaultTimer createWith:eventBus systemTimer:systemTimer];
+    id <TYTimer> timer = [TYDefaultTimer timerWithEventBus:eventBus systemTimer:systemTimer];
     
-    [timer start:timerContext];
+    [timer startWithContext:timerContext];
     XCTAssertFalse([systemTimer isInterrupted]);
     
     [systemTimer tick];

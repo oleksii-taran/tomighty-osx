@@ -7,12 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TYAppUI.h"
-#import "TYStatusIcon.h"
-#import "TYStatusMenu.h"
+#import "TYAppUIProtocol.h"
+#import "TYStatusIconProtocol.h"
+#import "TYStatusMenuProtocol.h"
 
 @interface TYDefaultAppUI : NSObject <TYAppUI>
 
-- (id)initWith:(id <TYStatusMenu>)statusMenu statusIcon:(id<TYStatusIcon>)statusIcon;
+- (instancetype)initWithStatusMenu:(id <TYStatusMenu>)statusMenu statusIcon:(id<TYStatusIcon>)statusIcon;
 
 @end

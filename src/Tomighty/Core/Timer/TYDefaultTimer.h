@@ -6,13 +6,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYEventBus.h"
-#import "TYSystemTimer.h"
-#import "TYTimerContext.h"
-#import "TYTimer.h"
+#import "TYEventBusProtocol.h"
+#import "TYSystemTimerProtocol.h"
+#import "TYTimerContextProtocol.h"
+#import "TYTimerProtocol.h"
 
 @interface TYDefaultTimer : NSObject <TYTimer>
 
-+ (id)createWith:(id<TYEventBus>)anEventBus systemTimer:(id<TYSystemTimer>)aSystemTimer;
++ (instancetype)timerWithEventBus:(id<TYEventBus>)anEventBus systemTimer:(id<TYSystemTimer>)aSystemTimer;
 
 @end

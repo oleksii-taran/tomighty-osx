@@ -6,7 +6,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "TYTimerContext.h"
+#import "TYTimerContextProtocol.h"
 #import "TYDefaultTimerContext.h"
 
 @interface TYTimerContextTests : XCTestCase
@@ -20,40 +20,40 @@
 
 - (void)test_context_type
 {
-    timerContext = [TYDefaultTimerContext ofType:SHORT_BREAK name:nil remainingSeconds:0];
-    XCTAssertEqual(SHORT_BREAK, [timerContext getContextType]);
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypeShortBreak name:nil remainingSeconds:0];
+    XCTAssertEqual(timerContext.type, TYTimerContextTypeShortBreak);
     
-    timerContext = [TYDefaultTimerContext ofType:POMODORO name:nil remainingSeconds:0];
-    XCTAssertEqual(POMODORO, [timerContext getContextType]);
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypePomodoro name:nil remainingSeconds:0];
+    XCTAssertEqual(timerContext.type, TYTimerContextTypePomodoro);
 }
 
 - (void)test_context_name
 {
-    timerContext = [TYDefaultTimerContext ofType:POMODORO name:@"Foo bar" remainingSeconds:0];
-    XCTAssertEqualObjects([timerContext getName], @"Foo bar");
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypePomodoro name:@"Foo bar" remainingSeconds:0];
+    XCTAssertEqualObjects(timerContext.name, @"Foo bar");
     
-    timerContext = [TYDefaultTimerContext ofType:POMODORO name:@"Hello" remainingSeconds:0];
-    XCTAssertEqualObjects([timerContext getName], @"Hello");
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypePomodoro name:@"Hello" remainingSeconds:0];
+    XCTAssertEqualObjects(timerContext.name, @"Hello");
 }
 
 - (void)test_initial_remaining_seconds
 {
-    timerContext = [TYDefaultTimerContext ofType:POMODORO name:nil remainingSeconds:579];
-    XCTAssertEqual([timerContext getRemainingSeconds], 579);
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypePomodoro name:nil remainingSeconds:579];
+    XCTAssertEqual(timerContext.remainingSeconds, 579);
 }
 
 - (void)test_add_seconds
 {
-    timerContext = [TYDefaultTimerContext ofType:POMODORO name:nil remainingSeconds:10];
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypePomodoro name:nil remainingSeconds:10];
     [timerContext addSeconds:3];
-    XCTAssertEqual([timerContext getRemainingSeconds], 13);
+    XCTAssertEqual(timerContext.remainingSeconds, 13);
 }
 
 - (void)test_subtract_seconds
 {
-    timerContext = [TYDefaultTimerContext ofType:POMODORO name:nil remainingSeconds:10];
+    timerContext = [TYDefaultTimerContext contextWithType:TYTimerContextTypePomodoro name:nil remainingSeconds:10];
     [timerContext addSeconds:-2];
-    XCTAssertEqual([timerContext getRemainingSeconds], 8);
+    XCTAssertEqual(timerContext.remainingSeconds, 8);
 }
 
 @end

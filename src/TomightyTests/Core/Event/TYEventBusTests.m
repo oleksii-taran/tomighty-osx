@@ -6,7 +6,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "TYEventBus.h"
+#import "TYEventBusProtocol.h"
 #import "TYDefaultEventBus.h"
 
 @interface TYEventBusTests : XCTestCase
@@ -28,12 +28,12 @@
 {
     __block BOOL hasReceivedEvent = false;
     
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
     {
         hasReceivedEvent = true;
     }];
     
-    [eventBus publish:TIMER_START data:nil];
+    [eventBus publishEventWithType:TYEventTypeTimerStart data:nil];
     
     XCTAssertTrue(hasReceivedEvent);
 }
@@ -42,12 +42,12 @@
 {
     __block BOOL hasReceivedEvent = false;
     
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
      {
          hasReceivedEvent = true;
      }];
     
-    [eventBus publish:TIMER_STOP data:nil];
+    [eventBus publishEventWithType:TYEventTypeTimerStop data:nil];
     
     XCTAssertFalse(hasReceivedEvent);
 }
@@ -57,12 +57,12 @@
     __block id receivedEventData;
     id expectedEventData = @"Foo bar";
 
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
     {
         receivedEventData = eventData;
     }];
 
-    [eventBus publish:TIMER_START data:expectedEventData];
+    [eventBus publishEventWithType:TYEventTypeTimerStart data:expectedEventData];
 
     XCTAssertEqualObjects(receivedEventData, expectedEventData);
 }
@@ -72,17 +72,17 @@
     __block BOOL hasFirstSubscriberReceivedEvent = false;
     __block BOOL hasSecondSubscriberReceivedEvent = false;
     
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
      {
          hasFirstSubscriberReceivedEvent = true;
      }];
     
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
      {
          hasSecondSubscriberReceivedEvent = true;
      }];
     
-    [eventBus publish:TIMER_START data:nil];
+    [eventBus publishEventWithType:TYEventTypeTimerStart data:nil];
     
     XCTAssertTrue(hasFirstSubscriberReceivedEvent);
     XCTAssertTrue(hasSecondSubscriberReceivedEvent);
@@ -94,22 +94,22 @@
     __block BOOL hasSecondSubscriberReceivedEvent = false;
     __block BOOL hasThirdSubscriberReceivedEvent = false;
 
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
      {
          hasFirstSubscriberReceivedEvent = true;
      }];
     
-    [eventBus subscribeTo:TIMER_TICK subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerTick usingBlock:^(id eventData)
      {
          hasSecondSubscriberReceivedEvent = true;
      }];
     
-    [eventBus subscribeTo:TIMER_START subscriber:^(id eventData)
+    [eventBus addObserverForEventType:TYEventTypeTimerStart usingBlock:^(id eventData)
      {
          hasThirdSubscriberReceivedEvent = true;
      }];
     
-    [eventBus publish:TIMER_TICK data:nil];
+    [eventBus publishEventWithType:TYEventTypeTimerTick data:nil];
     
     XCTAssertFalse(hasFirstSubscriberReceivedEvent);
     XCTAssertTrue(hasSecondSubscriberReceivedEvent);
@@ -118,7 +118,7 @@
 
 - (void)test_do_not_give_error_when_publishing_event_with_no_subscribers
 {
-    [eventBus publish:TIMER_TICK data:nil];
+    [eventBus publishEventWithType:TYEventTypeTimerTick data:nil];
 }
 
 @end

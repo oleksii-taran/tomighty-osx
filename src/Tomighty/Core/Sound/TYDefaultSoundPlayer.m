@@ -20,21 +20,21 @@ NSString * const SOUND_TIMER_GOES_OFF = @"timer_goes_off";
 - (id)init
 {
     self = [super init];
-    if(self)
+    if (self)
     {
         soundClipCache = [[NSMutableDictionary alloc] initWithCapacity:4];
     }
     return self;
 }
 
-- (void)play:(NSString *)soundClipName
+- (void)playSoundWithName:(NSString *)soundClipName
 {
-    [self play:soundClipName loops:false];
+    [self playSoundWithName:soundClipName loops:false];
 }
 
-- (void)loop:(NSString *)soundClipName
+- (void)loopSoundWithName:(NSString *)soundClipName
 {
-    [self play:soundClipName loops:true];
+    [self playSoundWithName:soundClipName loops:true];
 }
 
 - (void)stopCurrentLoop
@@ -42,27 +42,27 @@ NSString * const SOUND_TIMER_GOES_OFF = @"timer_goes_off";
     [currentLoopingSoundClip stop];
 }
 
-- (void)play:(NSString *)soundClipName loops:(BOOL)loops
+- (void)playSoundWithName:(NSString *)soundClipName loops:(BOOL)loops
 {
-    if(loops)
+    if (loops)
     {
         [self stopCurrentLoop];
     }
     
-    NSSound *soundClip = [self getSoundClip:soundClipName];
+    NSSound *soundClip = [self soundWithName:soundClipName];
     [soundClip setLoops:loops];
     [soundClip play];
     
-    if(loops)
+    if (loops)
     {
         currentLoopingSoundClip = soundClip;
     }
 }
 
-- (NSSound *)getSoundClip:(NSString *)soundClipName
+- (NSSound *)soundWithName:(NSString *)soundClipName
 {
     NSSound *soundClip = [soundClipCache objectForKey:soundClipName];
-    if(!soundClip)
+    if (!soundClip)
     {
         soundClip = [NSSound soundNamed:soundClipName];
         soundClipCache[soundClipName] = soundClip;

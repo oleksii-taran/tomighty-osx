@@ -7,11 +7,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TYStatusIcon.h"
+#import "TYStatusIconProtocol.h"
 #import "TYImageLoader.h"
 
 @interface TYDefaultStatusIcon : NSObject <TYStatusIcon>
 
-- (id)initWith:(NSMenu *)menu imageLoader:(TYImageLoader *)imageLoader;
+- (instancetype)initWithMenu:(NSMenu *)menu imageLoader:(TYImageLoader *)imageLoader;
 
 @end

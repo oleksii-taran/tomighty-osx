@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TYSoundPlayer.h"
+#import "TYSoundPlayerProtocol.h"
 
 @interface TYDefaultSoundPlayer : NSObject <TYSoundPlayer>
 
