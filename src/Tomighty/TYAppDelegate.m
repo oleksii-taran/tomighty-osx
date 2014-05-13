@@ -64,6 +64,12 @@
     [syntheticEventPublisher publishSyntheticEventsInResponseToOtherEventsFrom:eventBus];
     [soundAgent playSoundsInResponseToEventsFrom:eventBus];
     [userInterfaceAgent updateAppUiInResponseToEventsFromEventBus:eventBus];
+	
+	[eventBus addObserverForEventType:TYEventTypePomodoroComplete usingBlock:^(id eventData) {
+		NSUserNotification *notification = [[NSUserNotification alloc] init];
+		notification.title = NSLocalizedString(@"Pomodoro has ended", nil);
+		[[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+	}];
     
     [self prepareMenuItemsUsingImageLoader:imageLoader];
     
